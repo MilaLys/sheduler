@@ -1,0 +1,36 @@
+.wrapper {
+    width: 60%;
+}
+
+.title {
+    padding: 10px;
+    margin: 0;
+    background: maroon;
+    color: #fff;
+}
+
+.user-info {
+    padding: 20px 0;
+    font-weight: 700;
+    background: #000;
+    color: #d0d0d0;
+    height: 30px;
+    line-height: 0px;
+}
+
+.input {
+    margin: 10px 0;   
+}
+
+.input input {
+     background: #d0d0d0;
+}
+
+.custom-btn {
+    background: #000;
+    color: #fff;
+}
+
+.custom-btn:hover {
+    background: #d0d0d0;
+}

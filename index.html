@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app='myApplication'>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+
+        <script>
+            //Create model
+            var model = {
+                user: 'Mila',
+                tasks: [{name: 'to do sth - 1', passed: false},
+                    {name: 'to do sth - 2', passed: false},
+                    {name: 'to do sth - 3', passed: false}
+                ]
+            };
+
+            //Create module
+            var myApplication = angular.module('myApplication', []);
+
+            //Create controller
+            myApplication.controller('myAppCtrl', function ($scope) {
+                $scope.data = model;
+
+                $scope.addNewUser = function(){
+                    $scope.data.user = $scope.userName;                 
+                };
+
+                $scope.addNewTask = function () {
+                    $scope.data.tasks.push({
+                        name: $scope.taskName,
+                        passed: 'No'
+                    });
+                    $scope.taskName = '';
+                };
+
+                $scope.showText = function (passed) {
+                    return passed ? 'Yes' : 'No';
+                };
+
+                $scope.setStyle = function (passed) {
+                    return passed ? "color:green; background: lightgreen" : 'color:#fff; background:maroon';
+                };
+            });
+
+        </script>
+    </head>
+    <body ng-controller="myAppCtrl">
+        <div class="center-block wrapper">
+            <header class="panel-default container-fluid">
+                <div class="row">
+                    <h1 class="text-center title">Sheduler List</h1>
+                    <div class="user-info">
+                        <div class="col-md-6">User: {{data.user}}</div>
+                        <div class="col-md-6">Number of tasks: {{data.tasks.length}}</div>
+                    </div>
+                </div>
+            </header>
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+
+                <tr ng-repeat="task in data.tasks" style='{{setStyle(task.passed)}}'>
+                    <td>{{task.name}}</td>
+                    <td>
+                        <input type='checkbox' ng-model='task.passed' autocomplete="off"/>
+                    </td>
+                    <td>
+                        <span style='{{setStyle(task.passed)}}'>
+                            {{showText(task.passed)}}
+                        </span>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="input-group input">
+                <input type="text" class="form-control" ng-model='userName'/>
+                <span class="input-group-btn">
+                    <button type="submit" class="btn custom-btn" ng-click='addNewUser()'>Add User</button>
+                </span>
+            </div>
+            
+            <div class="input-group input">
+                <input type="text" class="form-control" ng-model='taskName'/>
+                <span class="input-group-btn">
+                    <button type="submit" class="btn custom-btn" ng-click='addNewTask()'>Add Task</button>
+                </span>
+            </div>
+        </div>
+
+    </body>
+</html>
