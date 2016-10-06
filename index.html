@@ -12,7 +12,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="styles.css">
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
 
         <script>
             //Create model
@@ -23,12 +23,42 @@ and open the template in the editor.
                     {name: 'to do sth - 3', passed: false}
                 ]
             };
-
+            
+            function say ( i ) { console.log('i am '+i) }
             //Create module
-            var myApplication = angular.module('myApplication', []);
+
+            angular.module('m1', []).run( function () { say(1) });
+            angular.module('m2', ['m3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9']).run( function () { say(2) });
+            angular.module('m3', []).run( function () { say(3) });
+            angular.module('m4', []).run( function () { say(4) });
+            angular.module('m5', []).run( function () { say(5) });
+            angular.module('m6', []).run( function () { say(6) });
+            angular.module('m7', []).run( function () { say(7) });
+            angular.module('m8', []).run( function () { say(8) });
+            angular.module('m9', [])
+                .run( function () { say(9) })
+                .service('myService', function(){
+                    
+                    console.log('I am created = myService');
+            
+                    return {
+                        say: function showMsg(){
+                            console.log('myService say', arguments);
+                        }
+                    };    
+                });
+            
+            
+            angular
+                .module('myApplication', ['m1','m2', 'm9'])
 
             //Create controller
-            myApplication.controller('myAppCtrl', function ($scope) {
+                .controller('myAppCtrl', function ($scope, $log, $http, $window, myService) {
+                
+//                console.log(arguments);
+        
+                myService.say(arguments);
+                
                 $scope.data = model;
 
                 $scope.addNewUser = function(){
