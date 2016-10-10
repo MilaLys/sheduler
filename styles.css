@@ -5,17 +5,23 @@
 .title {
     padding: 10px;
     margin: 0;
-    background: maroon;
+    background: #000;
     color: #fff;
 }
 
 .user-info {
     padding: 20px 0;
     font-weight: 700;
-    background: #000;
+    background: #505050;
     color: #d0d0d0;
     height: 30px;
     line-height: 0px;
+}
+
+.user-info span {
+    color: #fff;
+    font-size: 16px;
+    padding-left: 10px;
 }
 
 .input {
@@ -23,14 +29,49 @@
 }
 
 .input input {
-     background: #d0d0d0;
+    background: #d0d0d0;
+}
+
+.check {
+    text-align: center;
 }
 
 .custom-btn {
-    background: red;
+    background: #000;
     color: #fff;
 }
 
-.custom-btn:hover {
-    background: #d0d0d0;
+.custom-btn:hover,
+.custom-btn:focus {
+    background: maroon;
+    color: #fff!important;
+    outline: 0!important;
+    border: 0!important;
+    box-shadow: none!important;
+}
+
+.tasks {
+    color: #fff;
+}
+
+.tasks th {
+    color: #505050;
+}
+
+.priority {
+    color: #d0d0d0;
+}
+
+.priority input[type = 'radio']{
+    margin-left: 10px;
+    margin-right: 5px;
+    vertical-align: top;
+}
+
+.priority input[type = 'radio']:checked + label{
+    color: #fff;
+}
+
+.text-state {
+    font-size: 16px;
 }
