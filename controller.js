@@ -10,12 +10,10 @@ angular
                 
             $scope.tasks = tasksService.getAll();
             
-            $scope.addNewUser = function () {
-                var user = userService.login();
-                if(user){
-                    $scope.data.user = user;
-                }
-                $scope.data.user = $scope.userName;
+            $scope.addNewUser = function (userName) {
+                
+                $scope.data.user = userService.addUser($scope.userName);
+                console.log(localStorage.getItem('users'));
             };
 
             $scope.setDate = function () {

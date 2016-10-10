@@ -121,7 +121,7 @@ angular
                     
                     return angular.extend(user, update||{});
 //                    var deffered = $q.deffered();
-//                    // делакм запрос
+//                    // делаем запрос
 //                    token
 //                    $http
 //                    return deffered.promise;
@@ -130,9 +130,12 @@ angular
                 /*
                  * @returns: {Object} - promise
                  */
-                addUser: function(name){
-                    localStorage.setItem('userName', name);
-                }
-                
+                addUser: function (name) {
+                    
+                    var users = localStorage.getItem('users') || [];
+                    users.push(name);
+                    localStorage.setItem('users', users);
+                    console.log(users);
+                }             
             };
         });

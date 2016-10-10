@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -63,14 +63,14 @@ and open the template in the editor.
             </table>
 
             <div class="input-group input">
-                <input type="" class="form-control" ng-model='userName'/>
+                <input type="text" class="form-control" ng-model='userName'/>
                 <span class="input-group-btn">
                     <button type="submit" class="btn custom-btn" ng-click='addNewUser()'>Add User</button>
                 </span>
             </div>
 
             <div class="input-group input">
-                <input type="text" class="form-control taskInput" ng-model='taskName' autocomplete="off"/>
+                <input type="text" class="form-control taskInput" ng-model='taskName' autocomplete="off" required/>
                 <span class="input-group-btn">
                     <button type="submit" class="btn custom-btn" ng-click='addTask()'>Add Task</button>
                 </span>
