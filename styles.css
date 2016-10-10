@@ -39,6 +39,7 @@
 .custom-btn {
     background: #000;
     color: #fff;
+    border: 1px solid maroon!important;
 }
 
 .custom-btn:hover,
@@ -48,6 +49,7 @@
     outline: 0!important;
     border: 0!important;
     box-shadow: none!important;
+    border: 1px solid maroon!important;
 }
 
 .tasks {
@@ -74,4 +76,17 @@
 
 .text-state {
     font-size: 16px;
+}
+
+.do-it {
+    color: #fff;
+    background: red;
+}
+.done {
+    color: #fff;
+    background: green;
+}
+
+.remove-btn {
+    text-align: center;
 }

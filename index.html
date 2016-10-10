@@ -14,127 +14,8 @@ and open the template in the editor.
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
         <script src="app.js"></script>
-        <script src="models.js"></script>
         <script src="controller.js"></script>
-        <script>
-            //Create model
-//            var model = {
-//                user: 'Mila',
-//                tasks: [{name: 'to do sth - 1', passed: false},
-//                    {name: 'to do sth - 2', passed: false},
-//                    {name: 'to do sth - 3', passed: false}
-//                ]
-//
-//            };
-
-//            function say(i) {
-//                console.log('i am ' + i)
-//            }
-//            //Create module
-//
-//            angular.module('m1', []).run(function () {
-//                say(1)
-//            });
-//            angular.module('m2', ['m3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9']).run(function () {
-//                say(2)
-//            });
-//            angular.module('m3', []).run(function () {
-//                say(3)
-//            });
-//            angular.module('m4', []).run(function () {
-//                say(4)
-//            });
-//            angular.module('m5', []).run(function () {
-//                say(5)
-//            });
-//            angular.module('m6', []).run(function () {
-//                say(6)
-//            });
-//            angular.module('m7', []).run(function () {
-//                say(7)
-//            });
-//            angular.module('m8', []).run(function () {
-//                say(8)
-//            });
-//            angular.module('m9', [])
-//                    .run(function () {
-//                        say(9)
-//                    })
-//                    .service('myService', function () {
-//
-//                        console.log('I am created = myService');
-//
-//                        return {
-//                            say: function showMsg() {
-//                                console.log('myService say', arguments);
-//                            }
-//                        };
-//                    });
-//
-//
-//            angular
-//                    .module('myApplication', ['m1', 'm2', 'm9'])
-//
-//                    //Create controller
-//                    .controller('myAppCtrl', function ($scope, $log, $http, $window, myService) {
-//
-////                console.log(arguments);
-//
-//                        myService.say(arguments);
-//
-//                        $scope.data = model;
-//
-//                        $scope.addNewUser = function () {
-//                            $scope.data.user = $scope.userName;
-//                        };
-//
-//                        $scope.addNewTask = function () {
-//                            if ($scope.taskName == '') {
-//                                alert('Type your task, please!');
-//                                return;
-//                            }
-//
-//                            if ($scope.taskName) {
-//                                $scope.data.tasks.push({
-//                                    name: $scope.taskName
-//                                });
-//
-//                                $scope.taskName = '';
-//                            }
-//                        };
-//
-//                        $scope.showText = function (passed) {
-//                            return passed ? 'Done!' : 'Do it!';
-//                        };
-//
-//                        $scope.setStyle = function (passed) {
-//                            return passed ? 'background:green' : "background: red";
-//                        };
-//
-//                        $scope.setDate = function () {
-//                            var date = new Date();
-//                            var options = {
-//                                year: 'numeric',
-//                                month: 'long',
-//                                day: 'numeric'
-//                            };
-//                            var day = date.toLocaleString("en-US", options);
-//                            return day;
-//                        };
-//
-//                        $scope.removeTask = function (passed) {
-//                            console.log('passed',passed);
-//                            if (!passed) {
-//                                alert('Select the task to delete.');
-//                            }
-//
-//                            if (passed) {
-//                                $scope.data.tasks[this].remove();
-//                            }
-//                        };
-//                    });
-
-        </script>
+        <script src="models.js"></script>
     </head>
     
     <body ng-controller="myAppCtrl">
@@ -155,11 +36,12 @@ and open the template in the editor.
                     <tr>
                         <th>Task</th>
                         <th>Priority</th>
-                        <th colspan="2">State</th>                         
+                        <th colspan="2">State</th> 
+                        <th>Remove Task</th>                        
                     </tr>
                 </thead>
 
-                <tr ng-repeat="task in data.tasks" style='{{setStyle(task.passed)}}'>
+                <tr ng-repeat="task in tasks" ng-class="task.passed ? 'done' : 'do-it'">                    
                     <td>{{task.name}}</td>
                     <td class="priority">
                         <input type="radio" name="importance" value="1" id="high" /><label for="high">High</label>
@@ -170,15 +52,18 @@ and open the template in the editor.
                         <input type='checkbox' ng-model='task.passed' autocomplete="off"/>
                     </td>
                     <td class="text-state">
-                        <span style='{{setStyle(task.passed)}}'>
-                            {{showText(task.passed)}}
+                        <span ng-class="task.passed ? 'done' : 'do-it'">
+                            {{task.passed ? 'Done!' : 'Do it!'}}
                         </span>
+                    </td>
+                    <td class='remove-btn'>
+                        <button type="submit" class="btn custom-btn" ng-click="removeTask( task );">Remove Task</button>              
                     </td>
                 </tr>
             </table>
 
             <div class="input-group input">
-                <input type="text" class="form-control" ng-model='userName'/>
+                <input type="" class="form-control" ng-model='userName'/>
                 <span class="input-group-btn">
                     <button type="submit" class="btn custom-btn" ng-click='addNewUser()'>Add User</button>
                 </span>
@@ -187,13 +72,11 @@ and open the template in the editor.
             <div class="input-group input">
                 <input type="text" class="form-control taskInput" ng-model='taskName' autocomplete="off"/>
                 <span class="input-group-btn">
-                    <button type="submit" class="btn custom-btn" ng-click='addNewTask()'>Add Task</button>
+                    <button type="submit" class="btn custom-btn" ng-click='addTask()'>Add Task</button>
                 </span>
             </div>
 
-            <div class="input">  
-                <button type="submit" class="btn custom-btn" ng-click="removeTask();">Remove Task</button>              
-            </div>
+            
         </div>
 
     </body>
