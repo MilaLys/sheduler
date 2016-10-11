@@ -14,11 +14,12 @@
     font-weight: 700;
     background: #505050;
     color: #d0d0d0;
-    height: 30px;
-    line-height: 0px;
+    line-height: 30px;
+    padding: 10px 0 45px 0;
 }
 
-.user-info span {
+.user-info span,
+.user-info label>span {
     color: #fff;
     font-size: 16px;
     padding-left: 10px;
@@ -58,6 +59,7 @@
 
 .tasks th {
     color: #505050;
+    text-align: center;
 }
 
 .priority {

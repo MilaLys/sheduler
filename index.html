@@ -15,20 +15,33 @@ and open the template in the editor.
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
         <script src="app.js"></script>
         <script src="controller.js"></script>
-        <script src="models.js"></script>
+        <script src="services.js"></script>
     </head>
-    
+
     <body ng-controller="myAppCtrl">
-        <div class="center-block wrapper">
-            <header class="panel-default container-fluid">
-                <div class="row">
-                    <h1 class="text-center title">Sheduler List</h1>
-                    <div class="user-info">
-                        <div class="col-md-4">User: <span>{{data.user}}</span></div>
-                        <div class="col-md-4">Number of tasks: <span>{{data.tasks.length}}</span></div>
-                        <div class="col-md-4">Date: <span>{{setDate()}}</span></div>
+        <div class="center-block wrapper container-fluid">
+            <header>               
+                <h1 class="text-center title">
+                    Sheduler List
+                </h1>
+
+                <div class="user-info">
+                    <div class="col-md-4">
+                        <form class="form-inline">
+                            <div>
+                                <label for="usersInput">User: <span>{{currentUser}}</span></label>                                  
+                                <select id="usersInput"
+                                        class="form-control"
+                                        ng-model="currentUser"
+                                        ng-options="user.userName as user.userName for user in users">
+                                </select>
+                            </div>
+                        </form>                       
                     </div>
+                    <div class="col-md-4">Number of tasks: <span>{{tasks.length}}</span></div>
+                    <div class="col-md-4">Date: <span>{{setDate()}}</span></div>
                 </div>
+
             </header>
 
             <table class="table table-bordered tasks" id="tasks">
@@ -41,25 +54,28 @@ and open the template in the editor.
                     </tr>
                 </thead>
 
-                <tr ng-repeat="task in tasks" ng-class="task.passed ? 'done' : 'do-it'">                    
-                    <td>{{task.name}}</td>
-                    <td class="priority">
-                        <input type="radio" name="importance" value="1" id="high" /><label for="high">High</label>
-                        <input type="radio" name="importance" value="2" id="medium" /><label for="medium">Medium</label>
-                        <input type="radio" name="importance" value="3" id="low" /><label for="low">Low</label>
-                    </td>
-                    <td class="check">
-                        <input type='checkbox' ng-model='task.passed' autocomplete="off"/>
-                    </td>
-                    <td class="text-state">
-                        <span ng-class="task.passed ? 'done' : 'do-it'">
-                            {{task.passed ? 'Done!' : 'Do it!'}}
-                        </span>
-                    </td>
-                    <td class='remove-btn'>
-                        <button type="submit" class="btn custom-btn" ng-click="removeTask( task );">Remove Task</button>              
-                    </td>
-                </tr>
+                <tbody>
+                    <tr ng-repeat="task in tasks track by $index" ng-class="task.passed ? 'done' : 'do-it'">                    
+                        <td>{{task.name}}</td>
+                        <td>{{task}}</td>
+                        <td class="priority">
+                            <input type="radio" name="importance" value="1" id="high" /><label for="high">High</label>
+                            <input type="radio" name="importance" value="2" id="medium" /><label for="medium">Medium</label>
+                            <input type="radio" name="importance" value="3" id="low" /><label for="low">Low</label>
+                        </td>
+                        <td class="check">
+                            <input type='checkbox' ng-model='task.passed' autocomplete="off"/>
+                        </td>
+                        <td class="text-state">
+                            <span ng-class="task.passed ? 'done' : 'do-it'">
+                                {{task.passed ? 'Done!' : 'Do it!'}}
+                            </span>
+                        </td>
+                        <td class='remove-btn'>
+                            <button type="submit" class="btn custom-btn" ng-click="removeTask(task);">Remove Task</button>              
+                        </td>
+                    </tr>
+                </tbody>
             </table>
 
             <div class="input-group input">
@@ -76,7 +92,7 @@ and open the template in the editor.
                 </span>
             </div>
 
-            
+
         </div>
 
     </body>

@@ -5,15 +5,21 @@ angular
         // получаем ранее созданный модуль
         .module('myApplication')
         // создаем принадлежащий ему контроллер
-        .controller('myAppCtrl', function ($scope, myService, tasksService, userService) {
-            $scope.data = myService;
-                
-            $scope.tasks = tasksService.getAll();
-            
-            $scope.addNewUser = function (userName) {
-                
-                $scope.data.user = userService.addUser($scope.userName);
-                console.log(localStorage.getItem('users'));
+        .controller('myAppCtrl', function ($scope, tasksService, userService) {
+            $scope.currentUserId = 0;
+            $scope.currentUser = 'Guest';
+            $scope.users = userService.getAllUsers();
+
+            if ($scope.users.length > 0) {
+                $scope.currentUserId = $scope.users[0].id;
+            }
+
+            $scope.addNewUser = function () {
+                var newUser = {
+                    id: Math.round(+new Date() / 1000),
+                    userName: $scope.userName
+                };
+                $scope.user = userService.addUser(newUser);
             };
 
             $scope.setDate = function () {
@@ -27,12 +33,16 @@ angular
                 return day;
             };
 
-            $scope.removeTask = function ( passed ) {
-                $scope.tasks = tasksService.remove(passed);
-            };
+            window.test = $scope.tasks = tasksService.getAll();
+
             $scope.addTask = function () {
                 $scope.tasks = tasksService.add({
-                    
+                    name: $scope.taskName
                 });
+                
+            };
+
+            $scope.removeTask = function (passed) {
+                $scope.tasks = tasksService.remove(passed);
             };
         });
