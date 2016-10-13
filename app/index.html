@@ -9,13 +9,15 @@ and open the template in the editor.
         <title>Sheduler List</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="styles/styles.css">
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../vendors/bootstrap-3.3.7-dist/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
-        <script src="app.js"></script>
-        <script src="controller.js"></script>
-        <script src="services.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/controller.js"></script>
+        <script src="scripts/services/db.service.js"></script>
+        <script src="scripts/services/user.service.js"></script>
+        <script src="scripts/services/tasks.service.js"></script>
     </head>
 
     <body ng-controller="myAppCtrl">
@@ -27,19 +29,32 @@ and open the template in the editor.
 
                 <div class="user-info">
                     <div class="col-md-4">
+                        User:
+                        <span>{{vm.user.name}}</span>
+                    </div>
+<!--                    <div class="col-md-4">
                         <form class="form-inline">
                             <div>
-                                <label for="usersInput">User: <span>{{currentUser}}</span></label>                                  
-                                <select id="usersInput"
-                                        class="form-control"
-                                        ng-model="currentUser"
-                                        ng-options="user.userName as user.userName for user in users">
+                                <label for="usersInput">User: <span>{{vm.user.name}}</span></label>                                  
+                                <select
+                                    id="usersInput"
+                                    class="form-control"
+                                    data-ng-model="currentUser"
+                                    data-ng-options="user.userName as user.userName for user in users"
+                                        >
+                                        some text
                                 </select>
                             </div>
-                        </form>                       
+                        </form>
+                    </div>-->
+                    <div class="col-md-4">
+                        Number of tasks: 
+                        <span>{{vm.tasks.length}}</span>
                     </div>
-                    <div class="col-md-4">Number of tasks: <span>{{tasks.length}}</span></div>
-                    <div class="col-md-4">Date: <span>{{setDate()}}</span></div>
+                    <div class="col-md-4">
+                        Date: 
+                        <span>{{vm.date.month+' - '+vm.date.day}}</span>
+                    </div>
                 </div>
 
             </header>
@@ -55,7 +70,7 @@ and open the template in the editor.
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="task in tasks track by $index" ng-class="task.passed ? 'done' : 'do-it'">                    
+                    <tr ng-repeat="task in vm.tasks track by $index" ng-class="task.passed ? 'done' : 'do-it'">                    
                         <td>{{task.name}}</td>
                         <td>{{task}}</td>
                         <td class="priority">
@@ -81,7 +96,7 @@ and open the template in the editor.
             <div class="input-group input">
                 <input type="text" class="form-control" ng-model='userName'/>
                 <span class="input-group-btn">
-                    <button type="submit" class="btn custom-btn" ng-click='addNewUser()'>Add User</button>
+                    <button type="submit" class="btn custom-btn" ng-click='changeUser()'>Add User</button>
                 </span>
             </div>
 
