@@ -17,32 +17,16 @@ angular
             getuser(lastUser());
 
 
-            function changeUser ( newUser ) {
-                dbService
-                    .setTable(newUser, vm)
-                    .then(
-                            function () {
-                                dbService
-                                    .getUser(newUser);
-                                    $scope.$evalAsync(function () {
-                                        vm.changingUser = newUser;                                       
-                                    });
-                            },
-                            function (error) {
-
-                            }
-                    );
-            };
-
-
 
 
             console.log();
 
             function dateFormat(date) {
+                var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
                 return {
-                    day: date.getDay(),
-                    month: date.getMonth(),
+                    day: date.getDate(),
+                    month: month[date.getMonth()],
                     year: date.getUTCFullYear()
                 };
             }

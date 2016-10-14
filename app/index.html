@@ -30,7 +30,7 @@ and open the template in the editor.
                 <div class="user-info">
                     <div class="col-md-4">
                         User:
-                        <span>{{vm.user.name}}</span>
+                        <span>{{user}}</span>
                     </div>
 <!--                    <div class="col-md-4">
                         <form class="form-inline">
@@ -53,7 +53,7 @@ and open the template in the editor.
                     </div>
                     <div class="col-md-4">
                         Date: 
-                        <span>{{vm.date.month+' - '+vm.date.day}}</span>
+                        <span>{{vm.date.month +  ' ' + vm.date.day}}</span>
                     </div>
                 </div>
 
@@ -96,7 +96,7 @@ and open the template in the editor.
             <div class="input-group input">
                 <input type="text" class="form-control" ng-model='userName'/>
                 <span class="input-group-btn">
-                    <button type="submit" class="btn custom-btn" ng-click='changeUser()'>Add User</button>
+                    <button type="submit" class="btn custom-btn">Add User</button>
                 </span>
             </div>
 
