@@ -13,25 +13,20 @@ angular
         }
 
         return {
-
             createUser: function ( name ) {
                 var deffered = $q.defer();
-                // получить введенное пользователем имя
                 dbService
                     .getUser( name )
                     .then(
                     function ( success ) {
-                        dbService
-                            .setUser( name );
+                        deffered.resolve( success );
                     },
                     function ( error ) {
                         deffered.reject( error );
                     } );
-
-                // заипсать его в БД
-                
-
+                return deffered.promise;
             },
+
             /* 
              * получить/создать пользователя
              * 
@@ -47,7 +42,6 @@ angular
                     .getUser( name )
                     .then(
                         function ( success ) {
-                            success.best = success.name.length > 5;
                             deffered.resolve( success );
                         },
                         function ( error ) {

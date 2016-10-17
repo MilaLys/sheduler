@@ -2,75 +2,127 @@
 'use strict';
 
 angular
-        
-    .module('myApplication')
-    
-    .service('dbService', function ( $q, $log, $window ) {
+
+    .module( 'myApplication' )
+
+    .service( 'dbService', ['$q', '$log', '$window', function ( $q, $log, $window ) {
+
         /* 
          * поднимаем базу данных
          * мы создаем 2 таблици users и tasks
          * 
-         * @privat
+         * @private
          */
+        var delay = 2;
         var store = $window.sessionStorage || $window.localStorage;
-//        store.setItem
-//        store.getItem
-        
+        //  store.setItem
+        //  store.getItem
+
         var bd = {
-            users: getTable('users'),
-            tasks: getTable('tasks')
+            users: getTable( 'users' ),
+            tasks: getTable( 'tasks' )
         };
-        
-       function getTable ( name ) {
-           var table = {};
-           try {
-               table = JSON.parse( store.getItem( name ) )||{};
-           } catch ( err ) {
-               $log.debug('DB error => getTable('+name+')', err);
-           }
-           return table;
-       }
-        
-       function setTable ( name, table ) {
-           var decode = JSON.stringify(table);
-           store.setItem(name, decode);
-           return table;
-       }
-       
-       $window.addEventListener('beforeunload', function () {
-           for ( var table in bd ) {
-               setTable( bd[table] );
-           }
-       }, false);
-        
+
+        delete bd.users['undefined']
+        setTable( 'users', bd.users );
+
+        function getTable( name ) {
+            var table = {};
+            try {
+                table = JSON.parse( store.getItem( name ) ) || {};
+            } catch ( err ) {
+                $log.debug( 'DB error => getTable(' + name + ')', err );
+            }
+            return table;
+        }
+
+        function setTable( name, table ) {
+            var decode = JSON.stringify( table );
+            store.setItem( name, decode );
+            return table;
+        }
+
         /* 
          * сервис эмулирующий ответы базы данных
          * 
          * @public
-         */     
+         */
         return {
-             /* 
-             * получить/создать пользователя
-             * 
-             * @param: { String } - user name он же id
-             * @returns: { Object } - promisse
-             * @public
-             */ 
-            getUser: function ( name ) {
+            /* 
+            * получить/создать пользователя
+            * 
+            * @param: { String } - user name он же id
+            * @returns: { Object } - promisse
+            * @public
+            */
+            getUserByName: function ( name ) {
                 var defferd = $q.defer();
                 var user = bd.users[name];
-                if ( !user ) {
-                    user = {
-                        testField: true,
-                        name: name,
-                    };
-                    bd.users[name] = user;
-                    setTable( 'users', bd.users );
+                setTable( 'users', bd.users );
+                setTimeout( function () {
+                    if ( user ) {
+                        defferd.resolve( user );
+                    } else {
+                        defferd.reject({code: 404, message: 'User '+ name +' note found.'});
+                    }
+                }, delay * 1000 );
+                return defferd.promise;
+            },
+            /* 
+            * получить/создать пользователя
+            * 
+            * @param: { String } - user name он же id
+            * @returns: { Object } - promisse
+            * @public
+            */
+            createUser: function ( user ) {
+                var defferd = $q.defer();
+                var newUser = null;
+                var error = {message: 'Unknown error.', code: 404};
+                if ( typeof user == 'object' ) {
+                    if ( user.name ) {
+                        if ( !bd.users[user.name] ) {
+                            newUser = bd.users[user.name] = user;
+                            // addition
+
+                        } else {
+                            error.message = 'User is already exist.';
+                        }
+                    } else {
+                        error.message = 'User name is required.';
+                    }
                 }
-                setTimeout(function () {
-                    defferd.resolve(user);
-//                    defferd.reject();
-                }, 5*1000);
+                setTable( 'users', bd.users );
+                setTimeout( function () {
+                    if ( newUser ) {
+                        defferd.resolve( newUser );
+                    } else {
+                        defferd.reject( error );
+                    }
+                }, delay * 1000 );
+                return defferd.promise;
+            },
+            /* 
+            * получить/создать пользователя
+            * 
+            * @param: { String } - user name он же id
+            * @returns: { Object } - promisse
+            * @public
+            */
+            getUserNameList: function () {
+                var defferd = $q.defer();
+                var list = [];
+                for ( var user in bd.users ) {
+                    list.push( user );
+                }
+                setTable( 'users', bd.users );
+                setTimeout( function () {
+                    if ( list ) {
+                        defferd.resolve( list );
+                    } else {
+                        defferd.reject( error );
+                    }
+                }, delay * 1000 );
                 return defferd.promise;
             },
             /* 
@@ -79,21 +131,21 @@ angular
              * @param: { String } - user name он же id
              * @returns: { Object } - promisse
              * @public
-             */ 
-            getTasks: function ( userId ) {
+             */
+            getUserTasks: function ( userId ) {
                 var deffered = $q.defer();
                 var tasks = bd.tasks[userId];
-                
-                if( !tasks ) {
+
+                if ( !tasks ) {
                     tasks = [];
                     bd.tasks[userId] = tasks;
-                    setTable('tasks', bd.tasks);
+                    setTable( 'tasks', bd.tasks );
                 }
-                
-                setTimeout(function(){
-                    deffered.resolve(tasks);
-                }, 5*1000);
-                
+
+                setTimeout( function () {
+                    deffered.resolve( tasks );
+                }, delay * 1000 );
+
                 return deffered.promise;
             },
             /* 
@@ -103,21 +155,21 @@ angular
              * @param: { Array } - список задач
              * @returns: { Object } - promisse
              * @public
-             */ 
+             */
             updateTasks: function ( userId, tasks ) {
                 var deffered = $q.defer();
                 bd.tasks[userId] = tasks;
-                
-                setTimeot(function(){
-                    deffered.resolve(tasks);
-                }, 5*1000);
-                
+                setTable( 'tasks', bd.tasks );
+                setTimeot( function () {
+                    deffered.resolve( tasks );
+                }, delay * 1000 );
+
                 return deffered.promise;
-            }                        
+            }
         };
-    });
-    
-    
+    }] );
+
+
 //    dbService
 //        .getUser('some')
 //        .then(

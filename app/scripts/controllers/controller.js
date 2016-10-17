@@ -5,26 +5,27 @@ angular
         // получаем ранее созданный модуль
         .module( 'myApplication' )
         // создаем принадлежащий ему контроллер
-        .controller( 'myAppCtrl', ['$scope', '$window', 'dbService', 'userService', 'userTasksService', function ( $scope, $window, dbService, userService, userTasksService ) {
+        .controller( 'myAppCtrl', function ( $scope, $window, dbService ) {
 
-            var vm = $scope.vm = {
+            var vm = window.vm = $scope.vm = {
                 user: { name: 'Guest' },
+                userList: [],
                 tasks: [],
+                lastUser: lastUser(),
                 date: dateFormat( new Date() ),
-                changingUser: { name: 'New User' }
+                changeUser: function ( name ) {
+                    if ( vm.userList.indexOf( name ) > -1 ) {
+                        getuser( name );
+                    } else if ( name ) {
+                        addUser( name );
+                    } else {
+                        console.warn( 'error', name );
+                    }
+                }
             };
+            dbService.getUserNameList().then( function ( list ) { vm.userList = list; } );
 
-            getuser( lastUser() );
-
-            $scope.addUser = function ( name ) {
-                console.log( userService );
-
-                userService
-                .getUser( name );
-            };
-
-
-
+            getuser( vm.lastUser );
 
             function dateFormat( date ) {
                 var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -36,6 +37,7 @@ angular
                 };
             };
 
+
             function lastUser( name ) {
                 var store = $window.sessionStorage || $window.localStorage;
                 if ( !name ) {
@@ -46,13 +48,42 @@ angular
                 return name;
             }
 
+            function addUser( name ) {
+                dbService
+                    .createUser( { name: name } )
+                    .then(
+                                function ( user ) {
+                                    dbService
+                                            .getUserTasks( user.name )
+                                            .then(
+                                                    function ( tasks ) {
+                                                        $scope.$evalAsync( function () {
+                                                            vm.lastUser = lastUser( user.name );
+                                                            vm.userList.push( user.name );
+                                                            vm.user = user;
+                                                            vm.tasks = tasks;
+                                                        } );
+                                                    },
+                                                    function ( error ) {
+
+                                                    }
+                                            );
+                                },
+                                function ( error ) {
+                                    // show user server error
+                                }
+                        )
+            };
+
             function getuser( name ) {
-                userService
-                        .getUser( name )
+                if ( vm.user.name == name ) {
+                } else {
+                    dbService
+                        .getUserByName( name )
                         .then(
                                 function ( user ) {
-                                    lastUser( user.name );
-                                    userTasksService
+                                    vm.lastUser = lastUser( user.name );
+                                    dbService
                                             .getUserTasks( user.name )
                                             .then(
                                                     function ( tasks ) {
@@ -70,6 +101,7 @@ angular
 
                                 }
                         );
+                }
             }
 
 
@@ -113,4 +145,4 @@ angular
             //            $scope.removeTask = function (passed) {
             //                $scope.tasks = tasksService.remove(passed);
             //            };
-        }] );
+        } );
