@@ -40,7 +40,11 @@
 .custom-btn {
     background: #000;
     color: #fff;
-    border: 1px solid maroon!important;
+    border: 1px solid #000!important;
+}
+
+.save-btn {
+    margin-bottom: 10px!important;
 }
 
 .custom-btn:hover,
@@ -53,6 +57,16 @@
     border: 1px solid maroon!important;
 }
 
+.custom-select {
+    background: #000!important;
+    border: none!important;
+    color: #d0d0d0!important;
+}
+
+.custom-select:focus {
+    box-shadow: none!important;
+}
+
 .tasks {
     color: #fff;
 }
@@ -60,10 +74,6 @@
 .tasks th {
     color: #505050;
     text-align: center;
-}
-
-.priority {
-    color: #d0d0d0;
 }
 
 .priority input[type = 'radio']{
@@ -82,13 +92,35 @@
 
 .do-it {
     color: #fff;
-    background: red;
-}
-.done {
-    color: #fff;
-    background: green;
 }
 
+.do-it.high {
+    background-color: rgba(255, 0, 0, 1);
+}
+
+.do-it.medium {
+    background-color: rgba(255, 0, 0, 0.6);
+}
+
+.do-it.low {
+    background-color: rgba(255, 0, 0, 0.3);
+}
+
+.done {
+    color: #fff;
+}
+
+.done.high {
+    background-color: rgba(0, 128, 0, 1);
+}
+
+.done.medium {
+    background-color: rgba(0, 128, 0, 0.6);
+}
+
+.done.low {
+    background-color: rgba(0, 128, 0, 0.3);
+}
 .remove-btn {
     text-align: center;
 }

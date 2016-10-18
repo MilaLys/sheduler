@@ -5,101 +5,117 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html ng-app='myApplication'>
-    <head>
-        <title>Sheduler List</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles/styles.css">
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="../vendors/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/controller.js"></script>
-        <script src="scripts/services/db.service.js"></script>
-    </head>
+<head>
+    <title>Sheduler List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/styles.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="../vendors/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/controller.js"></script>
+    <script src="scripts/services/db.service.js"></script>
+</head>
 
-    <body ng-controller="myAppCtrl">
-        <div class="center-block wrapper container-fluid">
-            <header>               
-                <h1 class="text-center title">
-                    Sheduler List
-                </h1>
-                <div class="user-info">
-                    <div class="col-md-4">
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label for="usersInput">
-                                    User:
-                                    <span>{{vm.lastUser}}</span>
-                                </label>                                  
-                                <select id="usersInput" class="form-control" data-ng-model="vm.lastUser" data-ng-change="vm.changeUser( username )">
-                                    <option data-ng-repeat="name in vm.userList" value="{{name}}"> {{name}} </option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-md-4">
-                        Number of tasks: 
-                        <span>{{vm.tasks.length}}</span>
-                    </div>
-                    <div class="col-md-4">
-                        Date: 
-                        <span>{{vm.date.month +  ' ' + vm.date.day}}</span>
-                    </div>
+<body ng-controller="myAppCtrl">
+<div class="center-block wrapper container">
+    <header>
+        <h1 class="text-center title">
+            Sheduler List
+        </h1>
+        <div class="row">
+            <div class="input col-md-6">
+                <div class="input-group ">
+                    <input type="text" class="form-control" data-ng-model='vm.userName'/>
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn custom-btn" data-ng-click="vm.changeUser( vm.userName )">Add User</button>
+                        </span>
                 </div>
-
-            </header>
-
-            <table class="table table-bordered tasks" id="tasks">
-                <thead>
-                    <tr>
-                        <th>Task</th>
-                        <th>Priority</th>
-                        <th colspan="2">State</th> 
-                        <th>Remove Task</th>                        
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr ng-repeat="task in vm.tasks track by $index" ng-class="task.passed ? 'done' : 'do-it'">                    
-                        <td>{{task.name}}</td>
-                        <td>{{task}}</td>
-                        <td class="priority">
-                            <input type="radio" name="importance" value="1" id="high" /><label for="high">High</label>
-                            <input type="radio" name="importance" value="2" id="medium" /><label for="medium">Medium</label>
-                            <input type="radio" name="importance" value="3" id="low" /><label for="low">Low</label>
-                        </td>
-                        <td class="check">
-                            <input type='checkbox' ng-model='task.passed' autocomplete="off"/>
-                        </td>
-                        <td class="text-state">
-                            <span ng-class="task.passed ? 'done' : 'do-it'">
-                                {{task.passed ? 'Done!' : 'Do it!'}}
-                            </span>
-                        </td>
-                        <td class='remove-btn'>
-                            <button type="submit" class="btn custom-btn" ng-click="removeTask(task);">Remove Task</button>              
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="input-group input">
-                <input type="text" class="form-control" ng-model='userName'/>
-                <span class="input-group-btn">
-                    <button type="submit" class="btn custom-btn" ng-click="vm.changeUser( userName )">Add User</button>
-                </span>
             </div>
 
-            <div class="input-group input">
-                <input type="text" class="form-control taskInput" ng-model='taskName' autocomplete="off" required/>
-                <span class="input-group-btn">
-                    <button type="submit" class="btn custom-btn" ng-click='addTask()'>Add Task</button>
-                </span>
+            <div class="input col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control taskInput" data-ng-model='vm.taskName' autocomplete="off" required/>
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn custom-btn" data-ng-click='vm.addTask( vm.taskName )'>Add Task</button>
+                        </span>
+                </div>
             </div>
-
-
         </div>
 
-    </body>
+        <button type="submit" class="btn custom-btn save-btn" value="Save changes" data-ng-click="vm.saveChanges( vm.tasks )">Save changes</button>
+        <button type="reset" class="btn custom-btn save-btn" value="reset" data-ng-click="vm.taskName = vm.userName = ''">Reset forms</button>
+
+        <div class="user-info">
+            <div class="col-md-4">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="usersInput">
+                            User:
+                            <span>{{vm.lastUser}}</span>
+                        </label>
+                        <select id="usersInput" class="form-control custom-select" data-ng-model="vm.lastUser" data-ng-change="vm.changeUser( vm.lastUser )">
+                            <option data-ng-repeat="name in vm.userList" value="{{name}}"> {{name}}</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                Number of tasks:
+                <span>{{vm.tasks.length}}</span>
+            </div>
+            <div class="col-md-4">
+                Date:
+                <span>{{vm.date.month +  ' ' + vm.date.day}}</span>
+            </div>
+        </div>
+
+    </header>
+
+    <table class="table table-bordered tasks" id="tasks">
+        <thead>
+        <tr>
+            <th>Task</th>
+            <th>Priority</th>
+            <th colspan="2">State</th>
+            <th>Remove Task</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <!--data-ng-class="{'done' : task.passed, 'do-it': !task.passed, 'hight': task.importance == 1, 'medium': task.importance == 2,'low': task.importance == 3}"-->
+        <!--class="qwe asdasd {{ (task.passed ?'done':'do-it')+' '+(task.importance == 1 ? 'high' : task.importance == 2 ? 'medium': 'low') }}"-->
+
+        <tr data-ng-repeat="task in vm.tasks track by $index"
+            data-ng-class="{'done' : task.passed, 'do-it': !task.passed, 'high': task.importance == 1, 'medium': task.importance == 2,'low': task.importance == 3}"
+        >
+            <td>{{task.name}}</td>
+
+            <td class="priority">
+                <input type="radio" name="{{'importance'+task.name+$index}}" value="1" id="high" data-ng-model="task.importance"/>
+                <label for="high">High</label>
+                <input type="radio" name="{{'importance'+task.name+$index}}" value="2" id="medium" data-ng-model="task.importance"/>
+                <label for="medium">Medium</label>
+                <input type="radio" name="{{'importance'+task.name+$index}}" value="3" id="low" data-ng-model="task.importance"/>
+                <label for="low">Low</label>
+            </td>
+            <td class="check">
+                <input type='checkbox' data-ng-model='task.passed' autocomplete="off"/>
+            </td>
+            <td class="text-state">
+                <span data-ng-class="task.passed ? 'done' : 'do-it'">
+                    {{task.passed ? 'Done!' : 'Do it!'}}
+                </span>
+            </td>
+            <td class='remove-btn'>
+                <button type="submit" class="btn custom-btn" data-ng-click="vm.tasks.splice($index, 1)">Remove Task</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+</body>
 </html>
