@@ -1,11 +1,11 @@
 'use strict';
 
 angular
-    // получаем ранее созданный модуль
+// получаем ранее созданный модуль
     .module('myApplication')
     // создаем принадлежащий ему контроллер
     .controller('myAppCtrl', function ($scope, $window, dbService) {
-
+        
         var vm = window.vm = $scope.vm = {
             user: {name: 'Guest'},
             taskName: '',
@@ -40,38 +40,38 @@ angular
                 dbService
                     .updateUserTasks(vm.user.name, vm.tasks)
                     .then(
-                        function ( tasks ) {
+                        function (tasks) {
                             $scope.$evalAsync(function () {
                                 vm.tasks = tasks;
                             });
                             // show message success to user
-                            alert ( 'Your changes were successfully saved.' );
+                            alert('Your changes were successfully saved.');
                         },
                         function (error) {
                             // show message error to user
-                            alert ( 'Your changes can\'t be saved.' );
+                            alert('Your changes can\'t be saved.');
                         }
                     );
             }
         };
-
+        
         dbService.getUserNameList().then(function (list) {
             vm.userList = list;
         });
-
+        
         getuser(vm.lastUser);
-
+        
         function dateFormat(date) {
             var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
+            
             return {
                 day: date.getDate(),
                 month: month[date.getMonth()],
                 year: date.getUTCFullYear()
             };
         };
-
-
+        
+        
         function lastUser(name) {
             var store = $window.sessionStorage || $window.localStorage;
             if (!name) {
@@ -81,7 +81,7 @@ angular
             }
             return name;
         }
-
+        
         function addUser(name) {
             dbService
                 .createUser({name: name})
@@ -99,7 +99,7 @@ angular
                                     });
                                 },
                                 function (error) {
-
+                                    
                                 }
                             );
                     },
@@ -108,7 +108,7 @@ angular
                     }
                 )
         };
-
+        
         function getuser(name) {
             if (vm.user.name == name) {
             } else {
@@ -127,18 +127,18 @@ angular
                                         });
                                     },
                                     function (error) {
-
+                                        
                                     }
                                 );
                         },
                         function (error) {
-
+                            
                         }
                     );
             }
         }
-
-
+        
+        
         //            $scope.currentUserId = 0;
         //            $scope.currentUser = 'Guest';
         //            $scope.users = userService.getAllUsers();

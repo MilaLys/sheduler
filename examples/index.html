@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myReverseFilterApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--$event-->
+<div ng-controller="EventController">
+    <button ng-click="clickMe($event)">Event</button>
+    <p>
+        <code>$event</code>:
+    <pre> {{$event | json}}</pre>
+    </p>
+    <p>
+        <code>clickEvent</code>:
+    <pre>{{clickEvent | json}}</pre>
+    </p>
+</div>
+
+<!--Filters-->
+<div ng-controller="FilterController as ctrl">
+    <div>
+        All entries:
+        <span ng-repeat="entry in ctrl.array">{{entry.name}} </span>
+    </div>
+    <div>
+        Entries that contain an "a":
+        <span ng-repeat="entry in ctrl.filteredArray">{{entry.name}} </span>
+    </div>
+</div>
+
+<!--Creating custom filters-->
+<div ng-controller="MyController">
+    <input ng-model="greeting" type="text"><br>
+    No filter: {{greeting}}<br>
+    Reverse: {{greeting|reverse}}<br>
+    Reverse + uppercase: {{greeting|reverse:true}}<br>
+    Reverse, filtered in controller: {{filteredGreeting}}<br>
+</div>
+</body>
+</html>
