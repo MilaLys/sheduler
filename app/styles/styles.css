@@ -1,5 +1,7 @@
 .wrapper {
     width: 60%;
+    background: #000;
+    margin: 20px;
 }
 
 .title {
@@ -10,7 +12,6 @@
 }
 
 .user-info {
-    padding: 20px 0;
     font-weight: 700;
     background: #505050;
     color: #d0d0d0;
