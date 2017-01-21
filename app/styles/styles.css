@@ -5,6 +5,9 @@
     border-radius: 4px;
     padding: 10px;
     margin: 10px;
+    -webkit-box-shadow: 0 0 5px #d0d0d0;
+    -moz-box-shadow: 0 0 5px #d0d0d0;
+    box-shadow: 0 0 5px #d0d0d0;
 }
 
 .title {
